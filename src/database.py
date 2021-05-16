@@ -10,9 +10,9 @@ def create_db():
     cursor_obj = conn.cursor()
 
     cursor_obj.execute(
-        '''CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, name TEXT, last_name TEXT, chat_id INTEGER);''')
+        '''CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT, last_name TEXT, chat_id INTEGER);''')
     cursor_obj.execute(
-        '''CREATE TABLE IF NOT EXISTS tasks(id INTEGER PRIMARY KEY, link TEXT, state TEXT, note REAL, user_id INTEGER, FOREIGN KEY(user_id) REFERENCES users(id));''')
+        '''CREATE TABLE tasks(id INTEGER PRIMARY KEY, link TEXT, state TEXT, note REAL, user_id INTEGER, FOREIGN KEY(user_id) REFERENCES users(id));''')
 
     conn.commit()
     conn.close()
