@@ -12,7 +12,7 @@ def create_db():
     cursor_obj.execute(
         '''CREATE TABLE users(id INTEGER PRIMARY KEY, name TEXT, last_name TEXT, chat_id INTEGER);''')
     cursor_obj.execute(
-        '''CREATE TABLE tasks(id INTEGER PRIMARY KEY, link TEXT, state TEXT, note REAL, user_id INTEGER, FOREIGN KEY(user_id) REFERENCES users(id));''')
+        '''CREATE TABLE tasks(id INTEGER PRIMARY KEY, link TEXT, state TEXT, grade REAL, user_id INTEGER, FOREIGN KEY(user_id) REFERENCES users(id));''')
 
     conn.commit()
     conn.close()
@@ -32,10 +32,14 @@ def insert_task(task_params):
     conn.execute("PRAGMA foreign_keys = 1")
     cursor_obj = conn.cursor()
 
-    cursor_obj.execute('''INSERT INTO tasks(id, link, state, note, user_id) VALUES(?, ?, ?, ?)''', task_params)
+    cursor_obj.execute('''INSERT INTO tasks(link, state, grade, user_id) VALUES(?, ?, ?, ?)''', task_params)
 
     conn.commit()
+    task_id = cursor_obj.lastrowid
+
     conn.close()
+
+    return task_id
 
 
 def get_user_by_chat_id(chat_id):
@@ -50,11 +54,22 @@ def get_user_by_chat_id(chat_id):
     return row
 
 
-def get_task_by_id(task_id):
+def get_task_by_id_and_user(task_id, user_id):
     conn = sqlite3.connect('bot.db')
     cursor_obj = conn.cursor()
 
-    cursor_obj.execute('''SELECT * FROM tasks WHERE id = %s''', task_id)
+    cursor_obj.execute('''SELECT * FROM tasks WHERE id = ? and user_id = ?''', [task_id, user_id])
+
+    row = cursor_obj.fetchone()
+    conn.close()
+
+    return row
+
+def get_task_by_user_and_link(user_id, link):
+    conn = sqlite3.connect('bot.db')
+    cursor_obj = conn.cursor()
+
+    cursor_obj.execute('''SELECT * FROM tasks WHERE user_id = ? and link = ?''', [user_id, link])
 
     row = cursor_obj.fetchone()
     conn.close()
