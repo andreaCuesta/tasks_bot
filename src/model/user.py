@@ -1,4 +1,4 @@
-import database
+import DB.database as database
 
 class User:
     def __init__(self, name, last_name, chat_id, id=None):

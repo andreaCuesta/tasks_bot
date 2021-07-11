@@ -1,10 +1,7 @@
 import sqlite3
 
-from sqlite3 import Error
-
-
 def create_db():
-    conn = sqlite3.connect('bot.db')
+    conn = sqlite3.connect('DB/bot.db')
     conn.execute("PRAGMA foreign_keys = 1")
 
     cursor_obj = conn.cursor()
@@ -18,7 +15,7 @@ def create_db():
     conn.close()
 
 def insert_user(user_params):
-    conn = sqlite3.connect('bot.db')
+    conn = sqlite3.connect('DB/bot.db')
     cursor_obj = conn.cursor()
 
     cursor_obj.execute('''INSERT INTO users(name, last_name, chat_id) VALUES(?, ?, ?)''', user_params)
@@ -26,9 +23,8 @@ def insert_user(user_params):
     conn.commit()
     conn.close()
 
-
 def insert_task(task_params):
-    conn = sqlite3.connect('bot.db')
+    conn = sqlite3.connect('DB/bot.db')
     conn.execute("PRAGMA foreign_keys = 1")
     cursor_obj = conn.cursor()
 
@@ -41,9 +37,8 @@ def insert_task(task_params):
 
     return task_id
 
-
 def get_user_by_chat_id(chat_id):
-    conn = sqlite3.connect('bot.db')
+    conn = sqlite3.connect('DB/bot.db')
     cursor_obj = conn.cursor()
 
     cursor_obj.execute('''SELECT * FROM users WHERE chat_id = ?''', [chat_id])
@@ -53,9 +48,8 @@ def get_user_by_chat_id(chat_id):
 
     return row
 
-
 def get_task_by_id_and_user(task_id, user_id):
-    conn = sqlite3.connect('bot.db')
+    conn = sqlite3.connect('DB/bot.db')
     cursor_obj = conn.cursor()
 
     cursor_obj.execute('''SELECT * FROM tasks WHERE id = ? and user_id = ?''', [task_id, user_id])
@@ -66,7 +60,7 @@ def get_task_by_id_and_user(task_id, user_id):
     return row
 
 def get_task_by_user_and_link(user_id, link):
-    conn = sqlite3.connect('bot.db')
+    conn = sqlite3.connect('DB/bot.db')
     cursor_obj = conn.cursor()
 
     cursor_obj.execute('''SELECT * FROM tasks WHERE user_id = ? and link = ?''', [user_id, link])
@@ -77,7 +71,7 @@ def get_task_by_user_and_link(user_id, link):
     return row
 
 def list_tasks_by_user(user_id):
-    conn = sqlite3.connect('bot.db')
+    conn = sqlite3.connect('DB/bot.db')
     cursor_obj = conn.cursor()
 
     cursor_obj.execute('''SELECT * FROM tasks WHERE user_id = ?''', [user_id])
@@ -88,7 +82,7 @@ def list_tasks_by_user(user_id):
     return rows
 
 def edit_task(task_id, link):
-    conn = sqlite3.connect('bot.db')
+    conn = sqlite3.connect('DB/bot.db')
     cursor_obj = conn.cursor()
 
     cursor_obj.execute('''UPDATE tasks SET link = ? WHERE id = ?''', [link, task_id])
@@ -100,7 +94,7 @@ def edit_task(task_id, link):
     return affected_rows
 
 def delete_task(task_id):
-    conn = sqlite3.connect('bot.db')
+    conn = sqlite3.connect('DB/bot.db')
     cursor_obj = conn.cursor()
 
     cursor_obj.execute('''DELETE FROM tasks WHERE id = ?''', [task_id])

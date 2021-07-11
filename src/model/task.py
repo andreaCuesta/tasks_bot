@@ -1,5 +1,4 @@
-import database
-
+import DB.database as database
 
 class Task:
     def __init__(self, link, user_id, id=None, status="pendiente", grade=None):
@@ -15,17 +14,17 @@ class Task:
 
     def edit(self, new_link):
         database.edit_task(self.id, new_link)
-        return self.get_task_by_id_and_user(self.id, self.user_id)
+        return self.get_by_id_and_user(self.id, self.user_id)
 
     def delete(self):
         database.delete_task(self.id)
 
     @staticmethod
-    def get_task_by_user_and_link(user_id, link):
+    def get_by_user_and_link(user_id, link):
         return database.get_task_by_user_and_link(user_id, link)
 
     @staticmethod
-    def get_task_by_id_and_user(task_id, user_id):
+    def get_by_id_and_user(task_id, user_id):
         task = database.get_task_by_id_and_user(task_id, user_id)
 
         if task is None:
@@ -36,7 +35,7 @@ class Task:
             return new_task
 
     @staticmethod
-    def list_tasks_by_user(user_id):
+    def list_by_user(user_id):
         tasks = database.list_tasks_by_user(user_id)
 
         user_tasks = []
