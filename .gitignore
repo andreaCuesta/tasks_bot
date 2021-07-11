@@ -3,7 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-src/config/auth.py
 src/DB/bot.db
 
 .idea/

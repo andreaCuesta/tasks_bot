@@ -1,4 +1,4 @@
-import DB.database as database
+import src.DB.database as database
 
 class Task:
     def __init__(self, link, user_id, id=None, status="pendiente", grade=None):

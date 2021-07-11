@@ -1,8 +1,8 @@
 import telegram
 from telegram.ext import ConversationHandler
 from telegram import ChatAction
-from model.user import User
-from model.task import Task
+from src.model.user import User
+from src.model.task import Task
 
 REGISTER, SUCCESSFUL_REGISTER, UPLOAD_TASK, CONSULT_TASK, EDIT_TASK, DELETE_TASK = range(6)
 

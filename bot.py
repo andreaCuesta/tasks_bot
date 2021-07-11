@@ -1,15 +1,15 @@
 import os
 
 from telegram.ext import Updater, CommandHandler, ConversationHandler, MessageHandler, Filters
-from config.auth import token
+from src.config.auth import token
 
-import DB.database as database
-import modules.commands_handlers as commands_handlers
+import src.DB.database as database
+import src.modules.commands_handlers as commands_handlers
 
 REGISTER, SUCCESSFUL_REGISTER, UPLOAD_TASK, CONSULT_TASK, EDIT_TASK, DELETE_TASK = range(6)
 
 if __name__ == '__main__':
-    if not os.path.exists('DB/bot.db'):
+    if not os.path.exists('src/DB/bot.db'):
         database.create_db()
 
     updater = Updater(token=token)
@@ -51,5 +51,13 @@ if __name__ == '__main__':
 
     dispatcher.add_handler(conversation_handler)
 
-    updater.start_polling()
+    # updater.start_polling()
+
+    # For heroku
+    PORT = int(os.environ.get('PORT', '8443'))
+    updater.start_webhook(listen="0.0.0.0",
+                          port=PORT,
+                          url_path=token,
+                          webhook_url="https://afternoon-retreat-75061.herokuapp.com/" + token)
+
     updater.idle()
